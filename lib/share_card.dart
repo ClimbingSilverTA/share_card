@@ -1,6 +1,24 @@
 library share_card;
 
+import 'dart:ui';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+class ShareCardController extends ChangeNotifier {
+  ShareCardController({GlobalKey? key}) : key = key ?? GlobalKey();
+  final GlobalKey key;
+
+  Future<Uint8List?> createImage() async {
+    final boundary =
+        key.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+    final image = await boundary?.toImage();
+    final byteData = await image?.toByteData(format: ImageByteFormat.png);
+    final imageBytes = byteData?.buffer.asUint8List();
+    return imageBytes;
+  }
+}
 
 class InfoBarStyle {
   const InfoBarStyle({
@@ -21,6 +39,7 @@ class ShareCard extends StatefulWidget {
     required this.subtitle,
     this.margin = const EdgeInsets.all(0),
     this.infoBarStyle = const InfoBarStyle(),
+    this.controller,
     this.borderRadius,
   }) : super(key: key);
 
@@ -29,6 +48,7 @@ class ShareCard extends StatefulWidget {
   final Widget subtitle;
   final EdgeInsets margin;
   final InfoBarStyle infoBarStyle;
+  final ShareCardController? controller;
   final BorderRadius? borderRadius;
 
   @override
@@ -43,36 +63,39 @@ class _ShareCardState extends State<ShareCard> {
       decoration: BoxDecoration(
         borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
       ),
-      child: ClipRRect(
-        borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
-        child: Column(
-          children: [
-            Container(
-              child: widget.child,
-            ),
-            Container(
-              padding: widget.infoBarStyle.padding,
-              width: double.infinity,
-              color: widget.infoBarStyle.backgroundColor,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  if (widget.infoBarStyle.iconWidget != null)
-                    widget.infoBarStyle.iconWidget!,
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        widget.title,
-                        widget.subtitle,
-                      ],
-                    ),
-                  )
-                ],
+      child: RepaintBoundary(
+        key: widget.controller?.key,
+        child: ClipRRect(
+          borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
+          child: Column(
+            children: [
+              Container(
+                child: widget.child,
               ),
-            )
-          ],
+              Container(
+                padding: widget.infoBarStyle.padding,
+                width: double.infinity,
+                color: widget.infoBarStyle.backgroundColor,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    if (widget.infoBarStyle.iconWidget != null)
+                      widget.infoBarStyle.iconWidget!,
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          widget.title,
+                          widget.subtitle,
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
