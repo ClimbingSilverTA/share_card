@@ -77,7 +77,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               title: Text(
-                "MyApp",
+                "MyApps | Some text that could be really long so",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
