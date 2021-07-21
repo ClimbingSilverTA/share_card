@@ -1,3 +1,7 @@
+## 0.3.1
+
+- Added optional `pixelRatio` argumnet to `getImageBytes`.
+
 ## 0.3.0
 
 - Refactored ShareCard to `StatefulWidget`.
