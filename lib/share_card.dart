@@ -13,7 +13,7 @@ class InfoBarStyle {
   final Widget? iconWidget;
 }
 
-class ShareCard extends StatelessWidget {
+class ShareCard extends StatefulWidget {
   const ShareCard({
     Key? key,
     required this.child,
@@ -23,6 +23,7 @@ class ShareCard extends StatelessWidget {
     this.infoBarStyle = const InfoBarStyle(),
     this.borderRadius,
   }) : super(key: key);
+
   final Widget child;
   final Widget title;
   final Widget subtitle;
@@ -31,34 +32,40 @@ class ShareCard extends StatelessWidget {
   final BorderRadius? borderRadius;
 
   @override
+  State<StatefulWidget> createState() => _ShareCardState();
+}
+
+class _ShareCardState extends State<ShareCard> {
+  @override
   Widget build(BuildContext context) {
     return Container(
-      margin: margin,
+      margin: widget.margin,
       decoration: BoxDecoration(
-        borderRadius: borderRadius ?? BorderRadius.circular(20),
+        borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
       ),
       child: ClipRRect(
-        borderRadius: borderRadius ?? BorderRadius.circular(20),
+        borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
         child: Column(
           children: [
             Container(
-              child: child,
+              child: widget.child,
             ),
             Container(
-              padding: infoBarStyle.padding,
+              padding: widget.infoBarStyle.padding,
               width: double.infinity,
-              color: infoBarStyle.backgroundColor,
+              color: widget.infoBarStyle.backgroundColor,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if (infoBarStyle.iconWidget != null) infoBarStyle.iconWidget!,
+                  if (widget.infoBarStyle.iconWidget != null)
+                    widget.infoBarStyle.iconWidget!,
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        title,
-                        subtitle,
+                        widget.title,
+                        widget.subtitle,
                       ],
                     ),
                   )
