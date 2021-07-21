@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final imageBytes = await controller.createImage();
+                final imageBytes = await controller.getImageBytes();
                 if (imageBytes != null) {
                   final directory = await getApplicationDocumentsDirectory();
                   final imagePath =

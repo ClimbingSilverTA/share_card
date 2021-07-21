@@ -8,7 +8,7 @@ class ShareCardController extends ChangeNotifier {
   ShareCardController({GlobalKey? key}) : key = key ?? GlobalKey();
   final GlobalKey key;
 
-  Future<Uint8List?> createImage() async {
+  Future<Uint8List?> getImageBytes() async {
     final boundary =
         key.currentContext?.findRenderObject() as RenderRepaintBoundary?;
     final image = await boundary?.toImage();
