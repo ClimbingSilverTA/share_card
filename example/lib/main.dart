@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:share_card/share_card.dart';
 import 'package:supercharged/supercharged.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,6 +31,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final controller = ShareCardController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -45,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ShareCard(
+              controller: controller,
               margin: EdgeInsets.all(20),
               child: Container(
                 color: Colors.blue,
@@ -93,6 +105,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.white,
                 ),
               ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final imageBytes = await controller.getImageBytes();
+                if (imageBytes != null) {
+                  final directory = await getApplicationDocumentsDirectory();
+                  final imagePath =
+                      await File('${directory.path}/example_image.png')
+                          .create();
+                  await imagePath.writeAsBytes(imageBytes);
+                }
+              },
+              child: Text("Create Image"),
             )
           ],
         ),
