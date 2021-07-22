@@ -37,17 +37,20 @@ class ShareCard extends StatefulWidget {
 }
 
 class _ShareCardState extends State<ShareCard> {
+  BorderRadius get borderRadius =>
+      widget.borderRadius ?? BorderRadius.circular(20);
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: widget.margin,
       decoration: BoxDecoration(
-        borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
+        borderRadius: borderRadius,
       ),
-      child: RepaintBoundary(
-        key: widget.controller?.key,
-        child: ClipRRect(
-          borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
+      child: ClipRRect(
+        borderRadius: borderRadius,
+        child: RepaintBoundary(
+          key: widget.controller?.key,
           child: Column(
             children: [
               Container(
