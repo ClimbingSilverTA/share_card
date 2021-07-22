@@ -1,3 +1,7 @@
+## 0.3.2
+
+- Refactored `ShareCard` and moved `RepaintBoundary`.
+
 ## 0.3.1
 
 - Added optional `pixelRatio` argumnet to `getImageBytes`.
